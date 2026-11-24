@@ -1,8 +1,8 @@
-# Analisis Data Eksploratif (EDA) Pengguna Portal Bisnis.id
+# Analisis Data Eksploratif (EDA) Pengguna Portal User Terpusat Bisnis.id
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 
-Proyek ini berisi Analisis Data Eksploratif (EDA) terhadap data pendaftaran dan kelengkapan profil pengguna portal Bisnis.id (`bisnis_id_prod.User`) sebagai tugas Ujian Tengah Semester (UTS) mata kuliah Data Science (`PSIKS2W002`).
+Proyek ini berisi Analisis Data Eksploratif (EDA) terhadap data pendaftaran dan kelengkapan profil pengguna Portal User Terpusat Bisnis.id (`bisnis_id_prod.User`) sebagai tugas Ujian Tengah Semester (UTS) mata kuliah Data Science (`PSIKS2W002`).
 
 ## Gambaran Umum dan Temuan Utama
 
