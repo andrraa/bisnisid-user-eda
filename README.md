@@ -1,84 +1,85 @@
-# Bisnis.id User Profile EDA
+# Analisis Data Eksploratif (EDA) Pengguna Portal Bisnis.id
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 
-Exploratory Data Analysis (EDA) on user registration and profile completeness data from the Bisnis.id portal (`bisnis_id_prod.User`). Prepared as a graduate Data Science midterm project (`PSIKS2W002`).
+Proyek ini berisi Analisis Data Eksploratif (EDA) terhadap data pendaftaran dan kelengkapan profil pengguna portal Bisnis.id (`bisnis_id_prod.User`) sebagai tugas Ujian Tengah Semester (UTS) mata kuliah Data Science (`PSIKS2W002`).
 
-## Overview
+## Gambaran Umum dan Temuan Utama
 
-The production `User` table contains 762,792 registered accounts across 48 columns (April 2012 to November 2026). Because the deprecated `is_retained_user` flag is no longer active in the system, this analysis focuses on demographic profile completeness (`has_demografi` and `profile_completeness_pct`) and acquisition channels (`auth_channel`) using a stratified, anonymized sample of 15,003 rows and 22 columns.
+Tabel `User` di database produksi menyimpan 762.792 akun terdaftar dalam 48 kolom dari April 2012 hingga November 2026. Karena penanda lama `is_retained_user` sudah tidak aktif dipakai di sistem, analisis diarahkan pada kelengkapan profil demografis (`has_demografi` dan `profile_completeness_pct`) serta kanal pendaftaran (`auth_channel`). Seluruh eksplorasi dijalankan menggunakan sampel terstratifikasi yang sudah dianonimkan sebanyak 15.003 baris dan 22 kolom.
 
-Key findings from the executed notebook (`EDA_Users_BisnisID_UTS.ipynb`):
+Dari hasil eksekusi notebook `EDA_Users_BisnisID_UTS.ipynb`, ditemukan beberapa pola utama:
 
-- Google SSO accounts for 82.1% of registrations (12,317 of 15,003 in the sample), followed by Direct Email / Legacy at 17.0%.
-- Over 93% of demographic fields (`gender_clean`, `age_years_raw`, `education`, `outcome_clean`) are empty and follow a Missing at Random (MAR) pattern: gender completeness is 1.61% for Google SSO users compared to 29.58% for Direct Email / Legacy users.
-- Users with at least one demographic field (`has_demografi = 1`, 6.33% of cleaned rows) correlate positively with `profile_completeness_pct` (+0.887), `is_migration` (+0.682), and `account_age_days` (+0.367), and negatively with `sso_channel_count` (-0.407).
-- Data cleaning removed the deprecated `login_recency_days` column (98.41% missing) and 101 rows with invalid `'0000-00-00'` registration dates (0.67%), leaving 14,902 clean rows while retaining valid long-term account ages from 2012.
+- Sebanyak 82,1% akun (12.317 dari 15.003 sampel) mendaftar melalui Google SSO, diikuti jalur Direct Email / Legacy sebesar 17,0%.
+- Lebih dari 93% kolom demografi (`gender_clean`, `age_years_raw`, `education`, `outcome_clean`) kosong dengan pola *Missing at Random* (MAR), terlihat dari tingkat keterisian jenis kelamin sebesar 1,61% pada pengguna Google SSO dibandingkan 29,58% pada pengguna Direct Email / Legacy.
+- Akun yang mengisi minimal satu data demografi (`has_demografi = 1`, sebanyak 6,33% dari baris bersih) memiliki korelasi positif dengan `profile_completeness_pct` (+0,887), `is_migration` (+0,682), dan `account_age_days` (+0,367), serta korelasi negatif dengan `sso_channel_count` (-0,407).
+- Proses pembersihan data menghapus kolom `login_recency_days` yang kosong 98,41% dan 101 baris dengan tanggal daftar `'0000-00-00'` (0,67%), sehingga tersisa 14.902 baris bersih sambil tetap mempertahankan umur akun lama sejak 2012.
 
-## Prerequisites & Quick Start
+## Prasyarat dan Cara Menjalankan
 
-1. Clone the repository and enter the project directory:
+1. Clone repositori ini lalu masuk ke direktori proyek:
 
    ```bash
    git clone https://github.com/haluboyys/bisnisid-user-eda.git
    cd bisnisid-user-eda
    ```
 
-2. Install the required Python packages:
+2. Pasang pustaka Python yang diperlukan:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Open and run the notebook:
+3. Buka dan jalankan notebook:
 
    ```bash
    jupyter notebook EDA_Users_BisnisID_UTS.ipynb
    ```
 
-## Usage & Data Privacy
+## Penggunaan dan Privasi Data
 
-All outputs, tables, and charts are pre-executed inside `EDA_Users_BisnisID_UTS.ipynb` so they render directly on GitHub. The notebook follows the 9-chapter EDA structure covering problem framing, data understanding, inspection, missing data handling, descriptive statistics, transformations, bivariate/correlation analysis, outlier treatment, and findings.
+Seluruh output kode, tabel statistik, dan delapan grafik visualisasi sudah dijalankan dan tersimpan di dalam `EDA_Users_BisnisID_UTS.ipynb`, sehingga langsung tampil saat dibuka di GitHub. Susunan notebook mengikuti sembilan bab panduan EDA, mulai dari perumusan masalah, pemahaman data, inspeksi awal, penanganan nilai kosong, statistik deskriptif, transformasi data, analisis hubungan antarvariabel, penanganan pencilan, hingga kesimpulan.
 
-To comply with personal data protection standards (UU PDP), no raw personally identifiable information (email addresses, full names, phone numbers, addresses, or password hashes) and no database credentials are stored in this repository. Text fields are anonymized into character lengths (`fullname_len`, `username_len`) or grouped categories.
+Untuk mematuhi prinsip pelindungan data pribadi (UU PDP), repositori ini tidak menyimpan data sensitif seperti alamat email utuh, nama lengkap, nomor telepon, alamat, hash kata sandi, maupun kredensial database. Kolom teks telah dianonimkan menjadi panjang karakter (`fullname_len`, `username_len`) atau dikelompokkan ke dalam kategori umum.
 
-<details><summary>Project Structure</summary>
+<details><summary>Struktur Proyek</summary>
 
 ```text
 bisnisid-user-eda/
 ├── data/
-│   └── users_bisnisid_sample.csv          # Anonymized stratified sample (15,003 rows, 22 columns)
+│   └── users_bisnisid_sample.csv              # Sampel terstratifikasi anonim (15.003 baris, 22 kolom)
 ├── figures/
-│   ├── fig1_tren_dan_kanal.png            # Annual registration trend & auth_channel distribution
-│   ├── fig2_missing_values.png            # Missing value percentages per column
-│   ├── fig3_distribusi_skewness.png       # Numeric distributions with skewness & kurtosis
-│   ├── fig4_transformasi_log.png          # Log transformation comparison on account_age_days
-│   ├── fig5_univariate.png                # Univariate distributions (completeness, has_demografi, Active)
-│   ├── fig6_bivariate.png                 # Account age vs profile completeness & has_demografi
-│   ├── fig7_korelasi_heatmap.png          # Spearman correlation heatmap
-│   └── fig8_outliers.png                  # Outlier detection boxplots (age & account age)
+│   ├── fig1_tren_dan_kanal.png                # Tren pendaftaran tahunan dan distribusi auth_channel
+│   ├── fig2_missing_values.png                # Persentase nilai kosong per kolom
+│   ├── fig3_distribusi_skewness.png           # Distribusi numerik dengan skewness dan kurtosis
+│   ├── fig4_transformasi_log.png              # Perbandingan transformasi log pada account_age_days
+│   ├── fig5_univariate.png                    # Analisis univariat (kelengkapan, has_demografi, Active)
+│   ├── fig6_bivariate.png                     # Umur akun terhadap kelengkapan profil dan has_demografi
+│   ├── fig7_korelasi_heatmap.png              # Heatmap korelasi Spearman
+│   └── fig8_outliers.png                      # Boxplot deteksi pencilan (usia dan umur akun)
 ├── report/
-│   └── EDA_AndraRamadanPratama_26MA41D006.pdf  # Final coursework report (Indonesian)
+│   ├── EDA_AndraRamadanPratama_26MA41D006.docx
+│   └── EDA_AndraRamadanPratama_26MA41D006.pdf
 ├── .gitignore
-├── EDA_Users_BisnisID_UTS.ipynb           # Pre-executed Jupyter Notebook (Bab 1 - Bab 9)
+├── EDA_Users_BisnisID_UTS.ipynb               # Notebook EDA siap tampil (Bab 1 sampai Bab 9)
 ├── README.md
 └── requirements.txt
 ```
 
 </details>
 
-## Development & Verification
+## Verifikasi
 
-To verify that the dataset, notebook execution outputs, and figures are intact:
+Untuk memastikan dataset, struktur notebook, dan seluruh hasil eksekusinya masih utuh, jalankan perintah berikut:
 
 ```bash
 python -c "import nbformat, pandas as pd; df = pd.read_csv('data/users_bisnisid_sample.csv'); nb = nbformat.read('EDA_Users_BisnisID_UTS.ipynb', as_version=4); nbformat.validate(nb); print('CSV:', df.shape, '| Cells:', len(nb.cells))"
 ```
 
-## Contributing
+## Kontribusi
 
-This repository is maintained as an academic coursework project. Suggestions and issues for improving the EDA pipeline are welcome via pull requests or issues.
+Repositori ini dibuat untuk keperluan tugas kuliah Program Pascasarjana. Masukan atau perbaikan terkait alur analisis tetap terbuka melalui *issue* maupun *pull request*.
 
-## License
+## Lisensi
 
-This repository was created for graduate coursework and does not include a `LICENSE` file yet.
+Repositori ini disusun untuk tugas akademik dan belum menyertakan berkas `LICENSE` secara khusus.
